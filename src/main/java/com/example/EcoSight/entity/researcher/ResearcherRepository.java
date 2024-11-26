@@ -1,4 +1,4 @@
-package com.example.EcoSight.researcher;
+package com.example.EcoSight.entity.researcher;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

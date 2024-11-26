@@ -1,4 +1,4 @@
-package com.example.EcoSight.sighting;
+package com.example.EcoSight.entity.sighting;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

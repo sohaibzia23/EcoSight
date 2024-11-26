@@ -1,4 +1,4 @@
-package com.example.EcoSight.administrator;
+package com.example.EcoSight.entity.administrator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

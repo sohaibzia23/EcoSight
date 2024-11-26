@@ -1,4 +1,4 @@
-package com.example.EcoSight.species;
+package com.example.EcoSight.entity.species;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

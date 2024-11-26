@@ -1,6 +1,5 @@
-package com.example.EcoSight.contributor;
+package com.example.EcoSight.entity.contributor;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
