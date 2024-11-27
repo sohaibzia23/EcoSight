@@ -1,4 +1,4 @@
-package com.example.EcoSight.entity.researcher;
+package com.example.EcoSight.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
