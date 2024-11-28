@@ -15,5 +15,7 @@ public class LatLong {
     Float longitude;
 
     public LatLong(Float lattitude, Float longitude) {
+        this.latitude = lattitude;
+        this.longitude = longitude;
     }
 }
