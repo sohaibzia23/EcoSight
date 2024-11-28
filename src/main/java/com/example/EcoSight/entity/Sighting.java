@@ -1,37 +1,43 @@
 package com.example.EcoSight.entity;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
-@Table(name="wildlife_sightings")
+@Table(name="sighting")
 public class Sighting {
-
     @Id
-    @Column(name="SightingID")
-    private Integer sightingID;
+    @Column(name = "SightingID")
+    private Integer sightingId;
 
-
-    @Column(name = "Validity")
+    @Column(name = "Validity", nullable = false)
     private Boolean validity;
 
-    @Column(name="Time")
-    private Time time;
+    @Column(name = "Time")
+    private LocalDateTime time;
 
-    @Column(name="UserID")
-    private Integer userID;
+    @ManyToOne
+    @JoinColumn(name = "UserID", referencedColumnName = "UserID")
+    private Contributor user;
 
-    @Column(name = "AdminID")
-    private Integer adminID;
+    @ManyToOne
+    @JoinColumn(name = "AdminID", referencedColumnName = "AdminID")
+    private Administrator admin;
 
+    @Column(name = "Status")
+    private String status;
 
+    public Sighting(int sightingId, Boolean validity, LocalDateTime time, String status, Contributor user, Administrator admin) {
+        this.sightingId = sightingId;
+        this.validity = validity;
+        this.time = time;
+        this.status = status;
+        this.user = user;
+        this.admin = admin;
+    }
 }

@@ -1,33 +1,29 @@
 package com.example.EcoSight.entity;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name="wildlife_sightings")
+@Table(name="species")
 public class Species {
-
 
     @Id
     @Column(name = "ScientificName")
-    String scientificName;
+    private String scientificName;
 
-    @Column(name = "SightingID")
-    Integer sightingID;
+    @Column(name = "CommonName")
+    private String commonName;
 
-    @Column(name="CommonName")
-    String commonName;
+    @ManyToOne
+    @JoinColumn(name = "SightingID", referencedColumnName = "SightingID")
+    private Sighting sightingId;
 
-    public Species(String commonName, String scientificName, Integer sightingID) {
-        this.commonName = commonName;
+    Species (String scientificName, Sighting sightingId, String commonName){
         this.scientificName = scientificName;
-        this.sightingID = sightingID;
+        this.commonName = commonName;
+        this.sightingId = sightingId;
     }
 }

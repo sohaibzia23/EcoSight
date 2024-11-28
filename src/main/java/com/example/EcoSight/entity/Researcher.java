@@ -10,27 +10,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="wildlife_sightings")
+@Table(name="researcher")
 public class Researcher {
-
     @Id
-    @Column(name="ResearcherID")
-    private Integer researcherID;
+    @Column(name = "researcherID")
+    private Integer researcherId;
 
     @Column(name = "REmail")
-    private String rEmail;
+    private String researcherEmail;
 
     @Column(name = "RFirstName")
-    private String rFirstName;
+    private String researcherFirstName;
 
     @Column(name = "RLastName")
-    private String rLastName;
+    private String researcherLastName;
 
 
-    public Researcher(String rEmail, Integer researcherID, String rFirstName, String rLastName) {
-        this.rEmail = rEmail;
-        this.researcherID = researcherID;
-        this.rFirstName = rFirstName;
-        this.rLastName = rLastName;
+    public Researcher(int researcherId, String researcherEmail, String researcherFirstName, String researcherLastName) {
+        this.researcherId = researcherId;
+        this.researcherEmail = researcherEmail;
+        this.researcherFirstName = researcherFirstName;
+        this.researcherLastName = researcherLastName;
     }
 }
