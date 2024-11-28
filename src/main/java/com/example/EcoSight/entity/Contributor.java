@@ -10,33 +10,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="wildlife_sightings")
+@Table(name="contributor")
 public class Contributor {
-
     @Id
-    @Column(name="UserID")
-    private Integer userID;
+    @Column(name = "UserID")
+    private Integer userId;
 
-    @Column(name="UEmail")
-    private String uEmail;
+    @Column(name = "UEmail")
+    private String userEmail;
 
-    @Column(name="UFirstName")
-    private String uFirstName;
+    @Column(name = "UFirstName")
+    private String userFirstName;
 
     @Column(name = "ULastName")
-    private String uLastName;
+    private String userLastName;
 
 
-    public Contributor(Integer userID, String uEmail, String uFirstName, String uLastName) {
-        this.userID = userID;
-        this.uEmail = uEmail;
-        this.uFirstName = uFirstName;
-        this.uLastName = uLastName;
+    public Contributor(int id, String email, String firstName, String lastName) {
+        this.userId = id;
+        this.userEmail = email;
+        this.userFirstName = firstName;
+        this.userLastName = lastName;
     }
-
-
-
-
-
-
 }
