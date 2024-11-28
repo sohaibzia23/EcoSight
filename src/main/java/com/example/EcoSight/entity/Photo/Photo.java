@@ -2,8 +2,12 @@ package com.example.EcoSight.entity.Photo;
 
 import com.example.EcoSight.entity.Sighting;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.engine.spi.Resolution;
 
+@Getter
+@Setter
 @Table(name = "photo")
 public class Photo {
     @EmbeddedId
