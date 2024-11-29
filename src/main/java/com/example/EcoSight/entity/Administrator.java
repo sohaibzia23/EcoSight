@@ -1,4 +1,4 @@
-package com.example.EcoSight.administrator;
+package com.example.EcoSight.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,12 +10,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="wildlife_sightings")
+@Table(name="administrator")
 public class Administrator {
-
     @Id
     @Column(name = "AdminID")
     private Integer adminID;
+
+    @Column(name = "AEmail")
+    private String adminEmail;
 
     @Column(name = "AFirstName")
     private String adminFirstName;
@@ -23,19 +25,11 @@ public class Administrator {
     @Column(name = "ALastName")
     private String adminLastName;
 
-
-    @Column(name = "AEmail")
-    private String adminEmail;
-
-    public Administrator(int adminID, String adminFirstName, String adminLastName, String adminEmail) {
+    public Administrator(int adminID, String adminEmail, String adminFirstName, String adminLastName) {
         this.adminID = adminID;
+        this.adminEmail = adminEmail;
         this.adminFirstName = adminFirstName;
         this.adminLastName = adminLastName;
-        this.adminEmail = adminEmail;
-
     }
-
-
-
 
 }
