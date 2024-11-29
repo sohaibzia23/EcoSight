@@ -19,6 +19,9 @@ public class Photo {
     @Column(name = "Resolution")
     private String resolution;
 
+    @Column(name = "file_format")
+    private String fileFormat;
+
     Photo(Integer photoId, String notes, String resolution, Sighting sighting){
         this.photoId.setPhtotoId(photoId);
         this.photoId.setSighting(sighting);
