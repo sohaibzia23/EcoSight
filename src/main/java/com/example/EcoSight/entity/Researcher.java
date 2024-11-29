@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name="researcher")
 public class Researcher {
     @Id
-    @Column(name = "researcherID")
+    @Column(name = "ResearcherID")
     private Integer researcherId;
 
     @Column(name = "REmail")
