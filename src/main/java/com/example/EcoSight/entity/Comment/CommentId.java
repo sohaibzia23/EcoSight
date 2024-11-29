@@ -1,7 +1,8 @@
 package com.example.EcoSight.entity.Comment;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import com.example.EcoSight.entity.Contributor;
+import com.example.EcoSight.entity.Researcher;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,11 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class CommentId {
-    @Column(name = "UserID")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "UserID", referencedColumnName = "UserID")
+    private Contributor user;
 
-    @Column(name = "ResearcherID")
-    private Integer researcherId;
+    @ManyToOne
+    @JoinColumn(name = "ResearcherID", referencedColumnName = "ResearcherID")
+    private Researcher researcher;
 }

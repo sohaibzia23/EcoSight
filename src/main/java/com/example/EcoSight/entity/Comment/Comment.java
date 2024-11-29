@@ -26,25 +26,13 @@ public class Comment {
     private String text;
 
     @ManyToOne
-    @MapsId("userId") // Maps this field to the composite key
-    @JoinColumn(name = "UserID", referencedColumnName = "UserID")
-    private Contributor user;
-
-    @ManyToOne
-    @MapsId("researcherId") // Maps this field to the composite key
-    @JoinColumn(name = "ResearcherID", referencedColumnName = "ResearcherID")
-    private Researcher researcher;
-
-    @ManyToOne
     @JoinColumn(name = "SightingID", referencedColumnName = "SightingID")
     private Sighting sighting;
 
     Comment(Contributor user, Researcher researcher, String text, Sighting sighting, LocalDateTime timePosted ){
         this.id = new CommentId();
-        this.id.setUserId(user.getUserId());
-        this.id.setResearcherId(researcher.getResearcherId());
-        this.user = user;
-        this.researcher = researcher;
+        this.id.setResearcher(researcher);
+        this.id.setUser(user);
         this.text = text;
         this.sighting = sighting;
         this.timePosted = timePosted;
