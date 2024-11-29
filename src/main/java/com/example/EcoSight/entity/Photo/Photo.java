@@ -4,10 +4,10 @@ import com.example.EcoSight.entity.Sighting;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.engine.spi.Resolution;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "photo")
 public class Photo {
     @EmbeddedId
@@ -19,13 +19,9 @@ public class Photo {
     @Column(name = "Resolution")
     private String resolution;
 
-    @ManyToOne
-    @JoinColumn(name = "SightingID", referencedColumnName = "SightingID")
-    private Sighting sighting;
-
     Photo(Integer photoId, String notes, String resolution, Sighting sighting){
         this.photoId.setPhtotoId(photoId);
-        this.photoId.setSightingId(sighting.getSightingId());
+        this.photoId.setSighting(sighting);
         this.notes = notes;
         this.resolution = resolution;
     }

@@ -1,8 +1,7 @@
 package com.example.EcoSight.entity.Photo;
 
 import com.example.EcoSight.entity.Sighting;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +12,7 @@ public class PhotoId {
     @Column(name = "PhotoID")
     private Integer phtotoId;
 
-    @Column(name = "SightingID")
-    private Integer sightingId;
+    @ManyToOne
+    @JoinColumn(name = "SightingID", referencedColumnName = "SightingID")
+    private Sighting sighting;
 }
