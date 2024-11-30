@@ -30,7 +30,7 @@ public class Sighting {
     private Administrator admin;
 
     @ManyToOne
-    @JoinColumn(name = "Approving_Researcher", nullable = true)
+    @JoinColumn(name = "Approving_Researcher")
     private Researcher approvingResearcher;
 
     @Column(name = "Status")
