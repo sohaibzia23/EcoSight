@@ -1,5 +1,7 @@
-package com.example.EcoSight.contributor;
+package com.example.EcoSight.services;
 
+import com.example.EcoSight.contributor.Contributor;
+import com.example.EcoSight.contributor.ContributorRepository;
 import com.example.EcoSight.repository.SightingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
