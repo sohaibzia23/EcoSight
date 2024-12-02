@@ -50,6 +50,9 @@ public List<Sighting> getSightingByUserId(Integer userID) {
       return sightingRepository.findByUserID(userID);
 }
 
+public List<Sighting> getValidatedSightings(String validity) {
+      return sightingRepository.findByValidatedSightings(validity);
+}
 
 
 }

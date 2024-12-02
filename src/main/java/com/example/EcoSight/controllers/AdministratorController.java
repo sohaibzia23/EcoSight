@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/admin/{adminID}") // Specify a URL mapping for administrator actions
+@RequestMapping("/admin/{adminID}")
 public class AdministratorController {
 
     private final AdministratorService administratorService;
@@ -42,5 +42,7 @@ public class AdministratorController {
     public List<Sighting> getSightingsByUserId(@PathVariable Integer userID) {
         return sightingService.getSightingByUserId(userID);
     }
+
+
 
 }

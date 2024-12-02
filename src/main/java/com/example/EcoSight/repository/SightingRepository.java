@@ -9,4 +9,6 @@ public interface SightingRepository extends JpaRepository<Sighting, Integer> {
     void delete(Integer sightingID);
 
     List<Sighting> findByUserID(Integer userID);
+
+    List<Sighting> findByValidatedSightings(String validity);
 }
