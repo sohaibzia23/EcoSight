@@ -1,35 +1,18 @@
 package com.example.EcoSight.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.entity.User.UserRole;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
-@Table(name="administrator")
-public class Administrator {
-    @Id
-    @Column(name = "AdminID")
-    private Integer adminID;
-
-    @Column(name = "AEmail")
-    private String adminEmail;
-
-    @Column(name = "AFirstName")
-    private String adminFirstName;
-
-    @Column(name = "ALastName")
-    private String adminLastName;
-
-    public Administrator(int adminID, String adminEmail, String adminFirstName, String adminLastName) {
-        this.adminID = adminID;
-        this.adminEmail = adminEmail;
-        this.adminFirstName = adminFirstName;
-        this.adminLastName = adminLastName;
+@DiscriminatorValue("ADMINISTRATOR")
+public class Administrator extends User {
+    @Override
+    public UserRole getRole() {
+        return UserRole.ADMINISTRATOR;
     }
-
 }
