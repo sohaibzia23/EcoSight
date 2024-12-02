@@ -1,11 +1,10 @@
 package com.example.EcoSight.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +23,9 @@ public class Researcher {
 
     @Column(name = "RLastName")
     private String researcherLastName;
+
+    @OneToMany(mappedBy="approvingResearcher")
+    private Set<Sighting> approvedSightings;
 
 
     public Researcher(int researcherId, String researcherEmail, String researcherFirstName, String researcherLastName) {

@@ -29,6 +29,10 @@ public class Sighting {
     @JoinColumn(name = "AdminID", referencedColumnName = "AdminID")
     private Administrator admin;
 
+    @ManyToOne
+    @JoinColumn(name = "Approving_Researcher")
+    private Researcher approvingResearcher;
+
     @Column(name = "Status")
     private String status;
 
