@@ -1,6 +1,5 @@
 package com.example.EcoSight.entity.Photo;
 
-import com.example.EcoSight.entity.Sighting;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +20,4 @@ public class Photo {
 
     @Column(name = "file_format")
     private String fileFormat;
-
-    Photo(Integer photoId, String notes, String resolution, Sighting sighting){
-        this.photoId.setPhtotoId(photoId);
-        this.photoId.setSighting(sighting);
-        this.notes = notes;
-        this.resolution = resolution;
-    }
 }

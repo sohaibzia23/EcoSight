@@ -1,35 +1,18 @@
 package com.example.EcoSight.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.entity.User.UserRole;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
-@Table(name="contributor")
-public class Contributor {
-    @Id
-    @Column(name = "UserID")
-    private Integer userId;
-
-    @Column(name = "UEmail")
-    private String userEmail;
-
-    @Column(name = "UFirstName")
-    private String userFirstName;
-
-    @Column(name = "ULastName")
-    private String userLastName;
-
-
-    public Contributor(int id, String email, String firstName, String lastName) {
-        this.userId = id;
-        this.userEmail = email;
-        this.userFirstName = firstName;
-        this.userLastName = lastName;
+@DiscriminatorValue("CONTRIBUTOR")
+public class Contributor extends User {
+    @Override
+    public UserRole getRole() {
+        return UserRole.CONTRIBUTOR;
     }
 }
