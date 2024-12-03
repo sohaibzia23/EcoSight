@@ -1,12 +1,8 @@
 package com.example.EcoSight.entity.Behaviour;
 
-import com.example.EcoSight.entity.Species;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -20,16 +16,6 @@ public class Behaviour {
     @Column(name = "Style")
     private String style;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "LevelOfActivity")
     private LevelOfActivity levelOfActivity;
-
-    @ManyToMany(mappedBy = "exhibitedBehaviour")
-    private Set<Species> species = new HashSet<>();
-
-    public Behaviour(String name, String style, LevelOfActivity levelOfActivity){
-        this.name = name;
-        this.style = style;
-        this.levelOfActivity = levelOfActivity;
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.EcoSight.entity.Photo;
 
-import com.example.EcoSight.entity.Sighting;
+import com.example.EcoSight.entity.Sighting.Sighting;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
