@@ -1,6 +1,6 @@
 package com.example.EcoSight.controllers;
 
-import com.example.EcoSight.entity.Sighting;
+import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.services.AdministratorService;
 import com.example.EcoSight.services.ContributorService;
 import com.example.EcoSight.services.SightingService;

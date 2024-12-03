@@ -1,11 +1,10 @@
 package com.example.EcoSight.services;
 
-import com.example.EcoSight.administrator.Administrator;
-import com.example.EcoSight.administrator.AdministratorRepository;
-import com.example.EcoSight.sighting.SightingRepository;
+import com.example.EcoSight.entity.Administrator;
+import com.example.EcoSight.repository.AdministratorRepository;
+import com.example.EcoSight.repository.ResearcherRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +16,10 @@ import java.util.Optional;
 public class AdministratorService {
 
     private final AdministratorRepository administratorRepository;
-    private final SightingRepository sightingRepository;
+    private final ResearcherRepository.SightingRepository sightingRepository;
 
     @Autowired
-   public AdministratorService(AdministratorRepository administratorRepository, SightingRepository sightingRepository){
+   public AdministratorService(AdministratorRepository administratorRepository, ResearcherRepository.SightingRepository sightingRepository){
         this.administratorRepository = administratorRepository;
         this.sightingRepository = sightingRepository;
     }

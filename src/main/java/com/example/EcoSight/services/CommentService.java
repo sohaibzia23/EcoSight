@@ -1,15 +1,11 @@
 package com.example.EcoSight.services;
 
 
-import com.example.EcoSight.contributor.ContributorRepository;
 import com.example.EcoSight.entity.Comment.Comment;
-import com.example.EcoSight.entity.Comment.CommentId;
 import com.example.EcoSight.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +33,7 @@ public class CommentService {
         return commentRepository.getAllCommentsByAResearcher(researcherID);
     }
 
-    public void deleteComment(CommentId commentId) {
+    public void deleteComment(Integer commentId) {
         Optional<Comment> comment = commentRepository.findById(commentId);
         if (comment.isPresent()) {
             commentRepository.deleteById(commentId);

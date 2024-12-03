@@ -1,7 +1,7 @@
 package com.example.EcoSight.repository;
 
-import com.example.EcoSight.administrator.Administrator;
 import com.example.EcoSight.entity.Researcher;
+import com.example.EcoSight.entity.Sighting.Sighting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -20,4 +20,19 @@ public interface ResearcherRepository extends JpaRepository<Researcher, Integer>
     Optional<Researcher> findByResearcherEmail(String researcherEmail);
 
 
+    interface SightingRepository extends JpaRepository<Sighting, String> {
+
+        Optional<Sighting> findByID(Integer sightingID);
+
+
+        Optional<Sighting> deleteBySightingID(Integer sightingID);
+
+
+        List<Sighting> findAll();
+
+        List<Sighting> findAllValidSightings(Boolean validity);
+
+        List<Sighting> findByUserID(Integer userID);
+
+    }
 }

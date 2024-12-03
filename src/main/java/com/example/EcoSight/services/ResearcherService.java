@@ -2,7 +2,6 @@ package com.example.EcoSight.services;
 
 import com.example.EcoSight.entity.Researcher;
 import com.example.EcoSight.repository.ResearcherRepository;
-
 import java.util.Optional;
 
 public class ResearcherService {
