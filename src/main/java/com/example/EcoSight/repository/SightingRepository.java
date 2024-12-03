@@ -1,6 +1,7 @@
 package com.example.EcoSight.repository;
 
 import com.example.EcoSight.entity.Sighting.Sighting;
+import com.example.EcoSight.entity.Species;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,4 @@ public interface SightingRepository extends JpaRepository<Sighting, Integer> {
     List<Sighting> findByUserID(Integer userID);
 
     List<Sighting> findByValidatedSightings(String validity);
-
-
 }
