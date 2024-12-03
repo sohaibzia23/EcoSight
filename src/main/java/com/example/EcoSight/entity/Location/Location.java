@@ -21,4 +21,6 @@ public class Location {
         this.latLong = new LatLong(latitude, longitude);
         this.sighting = sighting;
     }
+
+
 }

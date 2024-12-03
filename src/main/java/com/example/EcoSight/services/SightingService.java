@@ -26,9 +26,11 @@ public class SightingService {
 
   }
 
-  public Optional<Sighting> getSightingById(Integer sightingID){
-      return sightingRepository.findById(sightingID);
-  }
+    public Optional<Sighting> getSightingById(Integer sightingID) {
+        return Optional.ofNullable(sightingRepository.findById(sightingID)
+                        .orElseThrow(() -> new NoSuchElementException("Sighting with id: " + sightingID + " not found."))
+        );
+    }
 
 
   public List<Sighting> getAllSightings() {

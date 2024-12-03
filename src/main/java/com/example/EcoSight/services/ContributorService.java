@@ -42,6 +42,10 @@ public class ContributorService {
         sightingRepository.delete(sightingID);
     }
 
+    public void deleteByUserId(Integer userID) {
+        contributorRepository.deleteById(userID);
+    }
+
 
 
 
