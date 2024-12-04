@@ -30,8 +30,13 @@ public class SightingController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<SightingDto>> getSightingsByUserId(@PathVariable Integer userId) {
-        List<SightingDto> sightings = sightingService.getSightingsByUserId(userId);
-        return ResponseEntity.ok(sightings);
+        try {
+            List<SightingDto> sightings = sightingService.getSightingsByUserId(userId);
+            return ResponseEntity.ok(sightings);
+        }catch (Exception e) {
+            System.out.print(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")
