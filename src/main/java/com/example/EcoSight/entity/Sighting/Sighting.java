@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="sighting")
 public class Sighting {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "SightingID")
     private Integer sightingId;
