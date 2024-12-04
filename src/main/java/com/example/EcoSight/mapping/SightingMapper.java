@@ -5,7 +5,9 @@ import com.example.EcoSight.entity.Contributor;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.repository.ContributorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class SightingMapper {
     private final ContributorRepository contributorRepository;
