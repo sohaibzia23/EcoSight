@@ -3,6 +3,7 @@ package com.example.EcoSight.entity.Location;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -16,4 +17,5 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "SightingID", referencedColumnName = "SightingID")
     private Sighting sighting;
+
 }
