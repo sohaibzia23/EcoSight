@@ -8,4 +8,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class ResearcherDto extends UserDto{
 
+
 }

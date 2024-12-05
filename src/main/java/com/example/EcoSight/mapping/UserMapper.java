@@ -6,10 +6,11 @@ import com.example.EcoSight.dto.UserDto;
 import com.example.EcoSight.entity.Contributor;
 import com.example.EcoSight.entity.Researcher;
 import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.entity.User.UserRole;
 
 public class UserMapper {
 
-    public static UserDto toUserDto(User user) {
+    public static UserDto mapToUserDto(User user) {
         if (user == null) {
             return null;
         }
@@ -23,7 +24,7 @@ public class UserMapper {
         return dto;
     }
 
-    public static ContributorDto toContributorDto(Contributor contributor) {
+    public static ContributorDto mapToContributorDto(Contributor contributor) {
         if (contributor == null) {
             return null;
         }
@@ -37,7 +38,7 @@ public class UserMapper {
         return dto;
     }
 
-    public static ResearcherDto toResearcherDto(Researcher researcher) {
+    public static ResearcherDto mapToResearcherDto(Researcher researcher) {
         if (researcher == null) {
             return null;
         }
@@ -49,5 +50,56 @@ public class UserMapper {
         dto.setUsername(researcher.getUsername());
         dto.setRole(researcher.getRole());
         return dto;
+    }
+
+    public static User mapToUser(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+
+        User user;
+        switch (userDto.getRole()) {
+            case CONTRIBUTOR:
+                user = new Contributor();
+                break;
+            case RESEARCHER:
+                user = new Researcher();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown role: " + userDto.getRole());
+        }
+
+        user.setId(userDto.getId());
+        user.setEmail(userDto.getEmail());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setUsername(userDto.getUsername());
+        return user;
+    }
+
+    public static Contributor mapToContributor(ContributorDto contributorDto) {
+        if (contributorDto == null) {
+            return null;
+        }
+        Contributor contributor = new Contributor();
+        contributor.setId(contributorDto.getId());
+        contributor.setEmail(contributorDto.getEmail());
+        contributor.setFirstName(contributorDto.getFirstName());
+        contributor.setLastName(contributorDto.getLastName());
+        contributor.setUsername(contributorDto.getUsername());
+        return contributor;
+    }
+
+    public static Researcher mapToResearcher(ResearcherDto researcherDto) {
+        if (researcherDto == null) {
+            return null;
+        }
+        Researcher researcher = new Researcher();
+        researcher.setId(researcherDto.getId());
+        researcher.setEmail(researcherDto.getEmail());
+        researcher.setFirstName(researcherDto.getFirstName());
+        researcher.setLastName(researcherDto.getLastName());
+        researcher.setUsername(researcherDto.getUsername());
+        return researcher;
     }
 }
