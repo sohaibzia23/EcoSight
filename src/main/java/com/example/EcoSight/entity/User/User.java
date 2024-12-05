@@ -31,5 +31,10 @@ public abstract class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "role", insertable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+
     public abstract UserRole getRole();
 }

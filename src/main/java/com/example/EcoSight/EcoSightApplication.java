@@ -10,4 +10,5 @@ public class EcoSightApplication {
 		SpringApplication.run(EcoSightApplication.class, args);
 	}
 
+
 }
