@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,6 +33,11 @@ public class Sighting {
     @ManyToOne
     @JoinColumn(name = "scientific_name", nullable = false)
     private Species species;
+
+    @ElementCollection
+    @CollectionTable(name = "sighting_images", joinColumns = @JoinColumn(name = "sighting_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
