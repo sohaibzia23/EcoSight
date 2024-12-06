@@ -2,7 +2,9 @@ package com.example.EcoSight.controllers;
 
 
 import com.example.EcoSight.dto.SightingDto;
+import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.services.SightingService;
+import com.example.EcoSight.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +15,9 @@ import java.util.List;
 @RequestMapping("/sightings")
 @RequiredArgsConstructor
 public class SightingController {
-    private final SightingService sightingService;
 
+    private final SightingService sightingService;
+    private UserService userService;
     @PostMapping
     public ResponseEntity<SightingDto> addSighting(@RequestBody SightingDto sightingDto) {
        try {
@@ -45,15 +48,7 @@ public class SightingController {
         return ResponseEntity.ok(sighting);
     }
 
-    @DeleteMapping("/{sightingId}")
-    public ResponseEntity<Void> deleteSighting(@PathVariable Integer sightingId) {
-        try {
-            sightingService.deleteSighting(sightingId);
-            return ResponseEntity.noContent().build();
-        }
-        catch(Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
+
 
 }

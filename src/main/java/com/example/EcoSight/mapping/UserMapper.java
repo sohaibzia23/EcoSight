@@ -1,8 +1,10 @@
 package com.example.EcoSight.mapping;
 
+import com.example.EcoSight.dto.AdministratorDto;
 import com.example.EcoSight.dto.ContributorDto;
 import com.example.EcoSight.dto.ResearcherDto;
 import com.example.EcoSight.dto.UserDto;
+import com.example.EcoSight.entity.Administrator;
 import com.example.EcoSight.entity.Contributor;
 import com.example.EcoSight.entity.Researcher;
 import com.example.EcoSight.entity.User.User;
@@ -49,6 +51,21 @@ public class UserMapper {
         dto.setLastName(researcher.getLastName());
         dto.setUsername(researcher.getUsername());
         dto.setRole(researcher.getRole());
+        return dto;
+    }
+
+    public static AdministratorDto mapToAdmininstratorDto(Administrator administrator) {
+        if (administrator == null) {
+            return null;
+        }
+
+        AdministratorDto dto = new AdministratorDto();
+        dto.setId(administrator.getId());
+        dto.setEmail(administrator.getEmail());
+        dto.setFirstName(administrator.getFirstName());
+        dto.setLastName(administrator.getLastName());
+        dto.setUsername(administrator.getUsername());
+        dto.setRole(administrator.getRole());
         return dto;
     }
 
@@ -101,5 +118,20 @@ public class UserMapper {
         researcher.setLastName(researcherDto.getLastName());
         researcher.setUsername(researcherDto.getUsername());
         return researcher;
+    }
+
+
+    public static Administrator mapToAdministrator(AdministratorDto administratorDto) {
+        if (administratorDto == null) {
+            return null;
+        }
+
+        Administrator administrator = new Administrator();
+        administrator.setId(administratorDto.getId());
+        administrator.setEmail(administratorDto.getEmail());
+        administrator.setFirstName(administratorDto.getFirstName());
+        administrator.setLastName(administratorDto.getLastName());
+        administrator.setUsername(administratorDto.getUsername());
+        return administrator;
     }
 }

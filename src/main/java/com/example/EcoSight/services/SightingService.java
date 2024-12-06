@@ -53,4 +53,13 @@ public class SightingService {
                 .orElseThrow(() -> new RuntimeException("Sighting not found"));
         sightingRepository.delete(sighting);
     }
+
+    @Transactional
+    public void deleteSightingsByContributorId(Integer contributorId) {
+        List<Sighting> sightings = sightingRepository.findSightingsByUserId(contributorId);
+        if (!sightings.isEmpty()) {
+            sightingRepository.deleteAll(sightings);
+        }
+    }
+
 }
