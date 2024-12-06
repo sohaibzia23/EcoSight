@@ -18,7 +18,6 @@ public class UserMapper {
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
-        dto.setUsername(user.getUsername());
         dto.setRole(user.getRole());
         return dto;
     }
@@ -32,7 +31,6 @@ public class UserMapper {
         dto.setEmail(contributor.getEmail());
         dto.setFirstName(contributor.getFirstName());
         dto.setLastName(contributor.getLastName());
-        dto.setUsername(contributor.getUsername());
         dto.setRole(contributor.getRole());
         return dto;
     }
@@ -46,7 +44,6 @@ public class UserMapper {
         dto.setEmail(researcher.getEmail());
         dto.setFirstName(researcher.getFirstName());
         dto.setLastName(researcher.getLastName());
-        dto.setUsername(researcher.getUsername());
         dto.setRole(researcher.getRole());
         return dto;
     }
@@ -72,7 +69,6 @@ public class UserMapper {
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setUsername(userDto.getUsername());
         return user;
     }
 
@@ -85,7 +81,6 @@ public class UserMapper {
         contributor.setEmail(contributorDto.getEmail());
         contributor.setFirstName(contributorDto.getFirstName());
         contributor.setLastName(contributorDto.getLastName());
-        contributor.setUsername(contributorDto.getUsername());
         return contributor;
     }
 
@@ -98,7 +93,6 @@ public class UserMapper {
         researcher.setEmail(researcherDto.getEmail());
         researcher.setFirstName(researcherDto.getFirstName());
         researcher.setLastName(researcherDto.getLastName());
-        researcher.setUsername(researcherDto.getUsername());
         return researcher;
     }
 }
