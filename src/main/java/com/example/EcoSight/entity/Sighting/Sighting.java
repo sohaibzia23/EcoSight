@@ -33,6 +33,9 @@ public class Sighting {
     @JoinColumn(name = "scientific_name", nullable = false)
     private Species species;
 
-    @Column(name = "Status", nullable = false)
-    private SightingStatus status;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SightingStatus status = SightingStatus.PENDING;
+
+
 }
