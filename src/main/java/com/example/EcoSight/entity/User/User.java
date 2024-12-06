@@ -11,6 +11,7 @@ import lombok.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type")
+@Table(name = "user")
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +35,6 @@ public abstract class User {
     @Column(name = "role", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
 
     public abstract UserRole getRole();
 }
