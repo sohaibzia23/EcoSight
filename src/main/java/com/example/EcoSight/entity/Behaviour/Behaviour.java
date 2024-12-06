@@ -10,12 +10,14 @@ import lombok.Setter;
 @Table(name = "behaviour")
 public class Behaviour {
     @Id
-    @Column(name = "BehaviourName")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "behavior_id")
+    private Integer behaviorId;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "Style")
-    private String style;
-
-    @Column(name = "LevelOfActivity")
-    private LevelOfActivity levelOfActivity;
+    @Column(name = "activity_level", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LevelOfActivity activityLevel;
 }
