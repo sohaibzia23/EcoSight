@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
+
 public class BehaviourService {
 
     private final BehaviourRepository behaviourRepository;

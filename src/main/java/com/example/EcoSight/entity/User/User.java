@@ -34,5 +34,10 @@ public abstract class User {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
+    @Column(name = "role", insertable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+
     public abstract UserRole getRole();
 }
