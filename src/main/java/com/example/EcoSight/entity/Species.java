@@ -9,11 +9,10 @@ import lombok.Setter;
 @Entity
 @Table(name="species")
 public class Species {
-
     @Id
-    @Column(name = "ScientificName")
+    @Column(name = "scientific_name")
     private String scientificName;
 
-    @Column(name = "CommonName")
+    @Column(name = "common_name")
     private String commonName;
 }
