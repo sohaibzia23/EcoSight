@@ -2,6 +2,9 @@ package com.example.EcoSight.entity.User;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +30,9 @@ public abstract class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
     public abstract UserRole getRole();
 }
