@@ -1,8 +1,7 @@
 package com.example.EcoSight.entity.Sighting;
 
-import com.example.EcoSight.entity.Behaviour.Behaviour;
-import com.example.EcoSight.entity.User.Contributor;
 import com.example.EcoSight.entity.Species;
+import com.example.EcoSight.entity.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +28,7 @@ public class Sighting {
 
     @ManyToOne
     @JoinColumn(name = "contributor_id", nullable = false)
-    private Contributor contributor;
+    private User contributor;
 
     @ManyToOne
     @JoinColumn(name = "scientific_name", nullable = false)
@@ -43,8 +42,4 @@ public class Sighting {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private SightingStatus status = SightingStatus.PENDING;
-
-    @ManyToOne
-    @JoinColumn(name = "behavior_id", nullable = false)
-    private Behaviour behavior;
 }
