@@ -1,5 +1,6 @@
 package com.example.EcoSight.entity.Sighting;
 
+import com.example.EcoSight.entity.Behaviour.Behaviour;
 import com.example.EcoSight.entity.User.Contributor;
 import com.example.EcoSight.entity.Species;
 import jakarta.persistence.*;
@@ -43,5 +44,7 @@ public class Sighting {
     @Enumerated(EnumType.STRING)
     private SightingStatus status = SightingStatus.PENDING;
 
-
+    @ManyToOne
+    @JoinColumn(name = "behavior_id", nullable = false)
+    private Behaviour behavior;
 }
