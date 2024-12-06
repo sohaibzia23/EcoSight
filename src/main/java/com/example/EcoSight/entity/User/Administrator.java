@@ -1,7 +1,5 @@
-package com.example.EcoSight.entity;
+package com.example.EcoSight.entity.User;
 
-import com.example.EcoSight.entity.User.User;
-import com.example.EcoSight.entity.User.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 

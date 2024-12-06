@@ -1,6 +1,6 @@
 package com.example.EcoSight.entity.Sighting;
 
-import com.example.EcoSight.entity.Contributor;
+import com.example.EcoSight.entity.User.Contributor;
 import com.example.EcoSight.entity.Species;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

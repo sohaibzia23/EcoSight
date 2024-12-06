@@ -3,10 +3,9 @@ package com.example.EcoSight.mapping;
 import com.example.EcoSight.dto.ContributorDto;
 import com.example.EcoSight.dto.ResearcherDto;
 import com.example.EcoSight.dto.UserDto;
-import com.example.EcoSight.entity.Contributor;
-import com.example.EcoSight.entity.Researcher;
+import com.example.EcoSight.entity.User.Contributor;
+import com.example.EcoSight.entity.User.Researcher;
 import com.example.EcoSight.entity.User.User;
-import com.example.EcoSight.entity.User.UserRole;
 
 public class UserMapper {
 

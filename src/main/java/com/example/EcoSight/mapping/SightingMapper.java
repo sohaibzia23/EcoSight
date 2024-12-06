@@ -1,7 +1,7 @@
 package com.example.EcoSight.mapping;
 
 import com.example.EcoSight.dto.SightingDto;
-import com.example.EcoSight.entity.Contributor;
+import com.example.EcoSight.entity.User.Contributor;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.repository.ContributorRepository;
 import lombok.RequiredArgsConstructor;

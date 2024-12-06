@@ -2,18 +2,16 @@ package com.example.EcoSight.services;
 
 import com.example.EcoSight.dto.ContributorDto;
 import com.example.EcoSight.dto.ResearcherDto;
-import com.example.EcoSight.entity.Contributor;
-import com.example.EcoSight.entity.Researcher;
+import com.example.EcoSight.entity.User.Contributor;
+import com.example.EcoSight.entity.User.Researcher;
 import com.example.EcoSight.mapping.UserMapper;
 import com.example.EcoSight.repository.ContributorRepository;
 import com.example.EcoSight.repository.ResearcherRepository;
 import com.example.EcoSight.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
