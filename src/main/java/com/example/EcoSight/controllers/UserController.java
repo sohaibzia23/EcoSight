@@ -2,6 +2,7 @@ package com.example.EcoSight.controllers;
 
 
 import com.example.EcoSight.dto.UserDto;
+import com.example.EcoSight.dto.UserLoginDto;
 import com.example.EcoSight.dto.auth.UserRegistrationDto;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.mapping.UserMapper;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -26,6 +28,16 @@ public class UserController {
             return ResponseEntity.ok(createdRegistration);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody UserLoginDto loginDto) {
+        try{
+            User account = userService.loginUser(loginDto);
+            return ResponseEntity.ok(account);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
