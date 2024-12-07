@@ -16,19 +16,20 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer commentid;
+    @Column(name = "comment_id")
+    private Integer commentId;
 
     @ManyToOne
     @JoinColumn(name = "commenter_id", nullable = false)
     private User commenter;
 
-    @Column(name = "TimePosted", nullable = false)
+    @Column(name = "time_posted", nullable = false)
     private LocalDateTime timePosted;
 
-    @Column(name = "Text", nullable = false)
-    private String text;
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @ManyToOne
-    @JoinColumn(name = "SightingID", referencedColumnName = "SightingID")
+    @JoinColumn(name = "sighting_id", nullable = false)
     private Sighting sighting;
 }

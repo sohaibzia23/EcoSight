@@ -1,6 +1,7 @@
 package com.example.EcoSight.entity.Sighting;
 
-import com.example.EcoSight.entity.Contributor;
+import com.example.EcoSight.entity.Species;
+import com.example.EcoSight.entity.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,16 +20,26 @@ import java.time.LocalDateTime;
 public class Sighting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "SightingID")
+    @Column(name = "sighting_id")
     private Integer sightingId;
 
-    @Column(name = "Time", nullable = false)
-    private LocalDateTime time;
+    @Column(name = "sighting_time", nullable = false)
+    private LocalDateTime sightingTime;
 
     @ManyToOne
     @JoinColumn(name = "contributor_id", nullable = false)
-    private Contributor contributor;
+    private User contributor;
 
-    @Column(name = "Status", nullable = false)
-    private SightingStatus status;
+    @ManyToOne
+    @JoinColumn(name = "scientific_name", nullable = false)
+    private Species species;
+
+    @ElementCollection
+    @CollectionTable(name = "sighting_images", joinColumns = @JoinColumn(name = "sighting_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SightingStatus status = SightingStatus.PENDING;
 }

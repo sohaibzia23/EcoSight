@@ -1,9 +1,12 @@
 package com.example.EcoSight.services;
 
 
-import com.example.EcoSight.dto.SightingDto;
+import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Sighting.SightingStatus;
+import com.example.EcoSight.entity.Species;
+import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.exceptions.InvalidDataException;
 import com.example.EcoSight.mapping.SightingMapper;
 import com.example.EcoSight.repository.SightingRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,29 +24,32 @@ public class SightingService {
     private final SightingMapper sightingMapper;
 
     @Transactional
-    public SightingDto addSighting(SightingDto sightingDto) {
-        sightingDto.setTime(LocalDateTime.now());
+    public Sighting addSighting(SightingDto sightingDto, User contributor, Species species) {
+        if (sightingDto == null) {
+            throw new InvalidDataException("Sighting data cannot be null");
+        }
+        sightingDto.setSightingTime(LocalDateTime.now());
         sightingDto.setStatus(SightingStatus.PENDING);
-        Sighting sighting = sightingMapper.toEntity(sightingDto);
-        Sighting savedSighting = sightingRepository.save(sighting);
-        return sightingMapper.toDto(savedSighting);
+        Sighting sighting = SightingMapper.mapToEntity(sightingDto, contributor, species);
+        return sightingRepository.save(sighting);
     }
 
     public SightingDto getSightingById(Integer id) {
         Sighting sighting = sightingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sighting not found"));
-        return sightingMapper.toDto(sighting);
+        return SightingMapper.mapToDto(sighting);
     }
 
-    public SightingDto getPendingSightingsByUserId(Integer userId) {
-        Sighting sighting = sightingRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Sighting not found"));
-        return sightingMapper.toDto(sighting);
+    public List<SightingDto> getPendingSightingsByUserId(Integer userId) {
+        List<Sighting> sightings = sightingRepository.findSightingsByUserId(userId).stream()
+                .filter(sighting ->  sighting.getStatus() == SightingStatus.PENDING)
+                .toList();
+        return SightingMapper.mapToDtoList(sightings);
     }
 
     public List<SightingDto> getSightingsByUserId(Integer userId) {
         return sightingRepository.findSightingsByUserId(userId).stream()
-                .map(sightingMapper::toDto)
+                .map(SightingMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
