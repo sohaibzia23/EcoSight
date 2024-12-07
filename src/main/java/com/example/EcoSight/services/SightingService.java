@@ -68,4 +68,10 @@ public class SightingService {
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + sightingId));
     }
 
+    public Sighting updateSightingStatus(Integer sightingId, SightingStatus newStatus) {
+        Sighting sighting = validateAndGetSighting(sightingId);
+        sighting.setStatus(newStatus);
+        return sightingRepository.save(sighting);
+    }
+
 }

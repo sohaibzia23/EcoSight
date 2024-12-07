@@ -33,8 +33,20 @@ public class UserService {
         }
     }
 
+    public User getUser(Integer id){
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new UserNotFoundException("Invalid email or password");
+        }
+    }
+
     public List<User> getAllContributors() {
         return userRepository.findByRole(UserRole.CONTRIBUTOR);
+    }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public User validateAndGetUser(Integer userId){

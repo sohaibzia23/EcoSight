@@ -4,6 +4,7 @@ package com.example.EcoSight.controllers;
 import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.dto.sighting.SightingSubmissionDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
+import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
@@ -140,7 +141,29 @@ public class SightingController {
         }
     }
 
+    @PatchMapping("/{sightingId}/status")
+    public ResponseEntity<SightingDto> updateSightingStatus(
+            @PathVariable Integer sightingId,
+            @RequestHeader("X-User-Id") Integer requestingUserId,
+            @RequestBody SightingStatus newStatus
+    ) {
+        try {
+            User requestUser = userService.validateAndGetUser(requestingUserId);
 
+            if (requestUser.getRole() != UserRole.RESEARCHER) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
 
+            Sighting updatedSighting = sightingService.updateSightingStatus(sightingId, newStatus);
+            return ResponseEntity.ok(SightingMapper.mapToDto(updatedSighting));
+
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 }
