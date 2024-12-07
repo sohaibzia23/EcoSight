@@ -3,6 +3,8 @@ package com.example.EcoSight.services;
 import com.example.EcoSight.dto.auth.UserRegistrationDto;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
+import com.example.EcoSight.exceptions.InvalidDataException;
+import com.example.EcoSight.exceptions.UserNotFoundException;
 import com.example.EcoSight.mapping.UserRegistrationMapper;
 import com.example.EcoSight.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +26,11 @@ public class UserService {
         return userRepository.findByRole(UserRole.CONTRIBUTOR);
     }
 
+    public User validateAndGetUser(Integer userId){
+        if (userId == null) {
+            throw new InvalidDataException("User ID cannot be null");
+        }
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+    }
 }

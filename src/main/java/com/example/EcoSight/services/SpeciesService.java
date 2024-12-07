@@ -3,9 +3,9 @@ package com.example.EcoSight.services;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.repository.SpeciesRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class SpeciesService {
 
@@ -18,4 +18,13 @@ public class SpeciesService {
     public void deleteSpecies(String scientificName) {
         speciesRepository.deleteById(scientificName);
     }
+
+    public Species getOrCreateSpecies(String scientificName, String commonName) {
+        return speciesRepository.findSpeciesByScientificName(scientificName)
+                .orElseGet(() -> {
+                    Species newSpecies = new Species(scientificName, commonName);
+                    return speciesRepository.save(newSpecies);
+                });
+    }
+
 }
