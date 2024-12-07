@@ -7,6 +7,7 @@ import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.exceptions.InvalidDataException;
+import com.example.EcoSight.exceptions.UserNotFoundException;
 import com.example.EcoSight.mapping.SightingMapper;
 import com.example.EcoSight.repository.SightingRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,12 +61,12 @@ public class SightingService {
         sightingRepository.delete(sighting);
     }
 
-    @Transactional
-    public void deleteSightingsByContributorId(Integer contributorId) {
-        List<Sighting> sightings = sightingRepository.findSightingsByUserId(contributorId);
-        if (!sightings.isEmpty()) {
-            sightingRepository.deleteAll(sightings);
+    public Sighting validateAndGetSighting(Integer sightingId){
+        if (sightingId == null) {
+            throw new InvalidDataException("Sighting ID cannot be null");
         }
+        return sightingRepository.findById(sightingId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + sightingId));
     }
 
 }

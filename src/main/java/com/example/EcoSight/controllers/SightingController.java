@@ -92,6 +92,31 @@ public class SightingController {
         }
     }
 
+    @DeleteMapping("/{sightingId}")
+    public ResponseEntity<Void> deleteSighting(
+            @PathVariable Integer sightingId,
+            @RequestHeader("X-User-Id") Integer requestingUserId
+            ) {
+        try {
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+            Sighting deletionCandidate = sightingService.validateAndGetSighting(sightingId);
+
+            if(requestUser.getRole() == UserRole.CONTRIBUTOR && requestUser.getId() == deletionCandidate.getContributor().getId()){
+                sightingService.deleteSighting(sightingId);
+                // We should probably also delete all other items dependent on it too
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        }catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 
 
