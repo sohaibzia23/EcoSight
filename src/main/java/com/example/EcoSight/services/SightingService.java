@@ -41,13 +41,6 @@ public class SightingService {
         return SightingMapper.mapToDto(sighting);
     }
 
-    public List<SightingDto> getPendingSightingsByUserId(Integer userId) {
-        List<Sighting> sightings = sightingRepository.findSightingsByUserId(userId).stream()
-                .filter(sighting ->  sighting.getStatus() == SightingStatus.PENDING)
-                .toList();
-        return SightingMapper.mapToDtoList(sightings);
-    }
-
     public List<SightingDto> getSightingsByUserId(Integer userId) {
         return sightingRepository.findSightingsByUserId(userId).stream()
                 .map(SightingMapper::mapToDto)
