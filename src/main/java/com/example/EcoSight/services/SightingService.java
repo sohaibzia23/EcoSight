@@ -41,10 +41,16 @@ public class SightingService {
         return SightingMapper.mapToDto(sighting);
     }
 
+    public List<SightingDto> getAllSightings() {
+        List<Sighting> sighting = sightingRepository.findAll();
+        List<SightingDto> sightingDtoList=  sighting.stream().map(SightingMapper::mapToDto).toList();
+        return sightingDtoList;
+    }
+
     public List<SightingDto> getSightingsByUserId(Integer userId) {
         return sightingRepository.findSightingsByUserId(userId).stream()
                 .map(SightingMapper::mapToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
