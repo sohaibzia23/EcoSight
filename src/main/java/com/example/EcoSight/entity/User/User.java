@@ -6,13 +6,9 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type")
 @Table(name = "user")
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -32,9 +28,7 @@ public abstract class User {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    @Column(name = "role", insertable = false, updatable = false)
+    @Column(name = "role", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    public abstract UserRole getRole();
 }
