@@ -82,6 +82,29 @@ public class SightingController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<SightingDto>> getAllSightings(
+            @RequestHeader("X-User-Id") Integer requestingUserId
+    ){
+        try {
+            // Get user or throw exception
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+
+            if(requestUser.getRole() == UserRole.CONTRIBUTOR){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }else{
+                List<SightingDto> sightings = sightingService.getAllSightings();
+                return ResponseEntity.ok(sightings);
+            }
+        }catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SightingDto> getSightingBySightingId(@PathVariable Integer id) {
         try{
