@@ -4,6 +4,7 @@ package com.example.EcoSight.controllers;
 import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.dto.sighting.SightingSubmissionDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
+import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
@@ -82,6 +83,29 @@ public class SightingController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<SightingDto>> getAllSightings(
+            @RequestHeader("X-User-Id") Integer requestingUserId
+    ){
+        try {
+            // Get user or throw exception
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+
+            if(requestUser.getRole() == UserRole.CONTRIBUTOR){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }else{
+                List<SightingDto> sightings = sightingService.getAllSightings();
+                return ResponseEntity.ok(sightings);
+            }
+        }catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SightingDto> getSightingBySightingId(@PathVariable Integer id) {
         try{
@@ -92,7 +116,54 @@ public class SightingController {
         }
     }
 
+    @DeleteMapping("/{sightingId}")
+    public ResponseEntity<Void> deleteSighting(
+            @PathVariable Integer sightingId,
+            @RequestHeader("X-User-Id") Integer requestingUserId
+            ) {
+        try {
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+            Sighting deletionCandidate = sightingService.validateAndGetSighting(sightingId);
 
+            if(requestUser.getRole() == UserRole.CONTRIBUTOR && requestUser.getId() == deletionCandidate.getContributor().getId()){
+                sightingService.deleteSighting(sightingId);
+                // We should probably also delete all other items dependent on it too
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        }catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
+    @PatchMapping("/{sightingId}/status")
+    public ResponseEntity<SightingDto> updateSightingStatus(
+            @PathVariable Integer sightingId,
+            @RequestHeader("X-User-Id") Integer requestingUserId,
+            @RequestBody SightingStatus newStatus
+    ) {
+        try {
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+
+            if (requestUser.getRole() != UserRole.RESEARCHER) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            Sighting updatedSighting = sightingService.updateSightingStatus(sightingId, newStatus);
+            return ResponseEntity.ok(SightingMapper.mapToDto(updatedSighting));
+
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 }

@@ -7,6 +7,7 @@ import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.exceptions.InvalidDataException;
+import com.example.EcoSight.exceptions.UserNotFoundException;
 import com.example.EcoSight.mapping.SightingMapper;
 import com.example.EcoSight.repository.SightingRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,17 +41,16 @@ public class SightingService {
         return SightingMapper.mapToDto(sighting);
     }
 
-    public List<SightingDto> getPendingSightingsByUserId(Integer userId) {
-        List<Sighting> sightings = sightingRepository.findSightingsByUserId(userId).stream()
-                .filter(sighting ->  sighting.getStatus() == SightingStatus.PENDING)
-                .toList();
-        return SightingMapper.mapToDtoList(sightings);
+    public List<SightingDto> getAllSightings() {
+        List<Sighting> sighting = sightingRepository.findAll();
+        List<SightingDto> sightingDtoList=  sighting.stream().map(SightingMapper::mapToDto).toList();
+        return sightingDtoList;
     }
 
     public List<SightingDto> getSightingsByUserId(Integer userId) {
         return sightingRepository.findSightingsByUserId(userId).stream()
                 .map(SightingMapper::mapToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -60,12 +60,18 @@ public class SightingService {
         sightingRepository.delete(sighting);
     }
 
-    @Transactional
-    public void deleteSightingsByContributorId(Integer contributorId) {
-        List<Sighting> sightings = sightingRepository.findSightingsByUserId(contributorId);
-        if (!sightings.isEmpty()) {
-            sightingRepository.deleteAll(sightings);
+    public Sighting validateAndGetSighting(Integer sightingId){
+        if (sightingId == null) {
+            throw new InvalidDataException("Sighting ID cannot be null");
         }
+        return sightingRepository.findById(sightingId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + sightingId));
+    }
+
+    public Sighting updateSightingStatus(Integer sightingId, SightingStatus newStatus) {
+        Sighting sighting = validateAndGetSighting(sightingId);
+        sighting.setStatus(newStatus);
+        return sightingRepository.save(sighting);
     }
 
 }
