@@ -4,6 +4,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PublicAccessType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +120,34 @@ public class AzureBlobStorageService implements StorageService {
                                 .getBlobContainerClient(containerName)
                                 .getBlobClient(blobItem.getName())
                                 .delete());
+    }
+
+    @Override
+    public void deleteFile(String filename) {
+        try{
+            BlobClient blobClient = blobServiceClient
+                    .getBlobContainerClient(containerName)
+                    .getBlobClient(filename);
+            if (blobClient.exists()) {
+                blobClient.delete();
+            } else {
+                throw new StorageFileNotFoundException("File not found: " + filename);
+            }
+        }catch (BlobStorageException e) {
+            throw new StorageException("Failed to delete file: " + filename, e);
+        }
+    }
+
+    public void deleteFileByUrl(String fileUrl) {
+        try {
+            // Extract the blob name from the URL
+            // URL format is typically: https://<account>.blob.core.windows.net/<container>/<blobname>
+            String blobName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+
+            deleteFile(blobName);
+        } catch (Exception e) {
+            throw new StorageException("Failed to delete file by URL: " + fileUrl, e);
+        }
     }
 
     // Additional method for getting URL directly

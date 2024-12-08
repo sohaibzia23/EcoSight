@@ -10,14 +10,20 @@ import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
 import com.example.EcoSight.exceptions.InvalidDataException;
 import com.example.EcoSight.exceptions.UserNotFoundException;
+import com.example.EcoSight.fileUpload.AzureBlobStorageService;
+import com.example.EcoSight.fileUpload.StorageFileNotFoundException;
+import com.example.EcoSight.fileUpload.StorageService;
 import com.example.EcoSight.mapping.SightingMapper;
 import com.example.EcoSight.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/sightings")
@@ -29,11 +35,12 @@ public class SightingController {
     private final SpeciesService speciesService;
     private final LocationService locationService;
     private final BehaviourService behaviourService;
+    private final StorageService storageService;
 
     @PostMapping("/create")
     public ResponseEntity<SightingDto> addSighting(
             @RequestHeader("X-User-Id") Integer requestingUserId,
-            @RequestBody SightingSubmissionDto sightingSubmissionDto) {
+            @ModelAttribute SightingSubmissionDto sightingSubmissionDto) {
         try {
             // Get user or throw exception
             User requestUser = userService.validateAndGetUser(requestingUserId);
@@ -56,8 +63,33 @@ public class SightingController {
                     sightingSubmissionDto.getBehaviourLevelOfActivity()
             );
 
+            // Handle file uploads and get URLs
+            List<String> imageUrls = new ArrayList<>();
+            if (sightingSubmissionDto.getImages() != null && !sightingSubmissionDto.getImages().isEmpty()) {
+                for (MultipartFile file : sightingSubmissionDto.getImages()) {
+                    if (!file.getContentType().startsWith("image/")) {
+                        throw new InvalidDataException("Only image files are allowed");
+                    }
 
-            SightingDto sightingDto = SightingSubmissionDto.toSightingDto(sightingSubmissionDto, requestUser);
+                    // Store the file and get its URL
+                    String filename = String.format("sighting-%s-%s",
+                            UUID.randomUUID().toString(),
+                            file.getOriginalFilename());
+                    storageService.store(file);
+
+                    // Get the URL (implementation depends on storage type)
+                    String fileUrl;
+                    if (storageService instanceof AzureBlobStorageService) {
+                        fileUrl = ((AzureBlobStorageService) storageService).getFileUrl(filename);
+                    } else {
+                        // For local storage, construct a URL to your server
+                        fileUrl = "/upload/files/" + filename;
+                    }
+                    imageUrls.add(fileUrl);
+                }
+            }
+
+            SightingDto sightingDto = SightingSubmissionDto.toSightingDto(sightingSubmissionDto, requestUser, imageUrls);
             Sighting addedSighting = sightingService.addSighting(sightingDto, requestUser, species);
             sightingDto.setSightingId(addedSighting.getSightingId());
             return ResponseEntity.ok(sightingDto);
@@ -133,23 +165,47 @@ public class SightingController {
     public ResponseEntity<Void> deleteSighting(
             @PathVariable Integer sightingId,
             @RequestHeader("X-User-Id") Integer requestingUserId
-            ) {
+    ) {
         try {
             User requestUser = userService.validateAndGetUser(requestingUserId);
             Sighting deletionCandidate = sightingService.validateAndGetSighting(sightingId);
 
-            if(requestUser.getRole() == UserRole.CONTRIBUTOR && requestUser.getId() == deletionCandidate.getContributor().getId()){
+            if (requestUser.getRole() == UserRole.CONTRIBUTOR &&
+                    requestUser.getId() == deletionCandidate.getContributor().getId()) {
+
+                // Delete associated images if they exist
+                if (deletionCandidate.getImageUrls() != null && !deletionCandidate.getImageUrls().isEmpty()) {
+                    for (String imageUrl : deletionCandidate.getImageUrls()) {
+                        try {
+                            if (storageService instanceof AzureBlobStorageService) {
+                                ((AzureBlobStorageService) storageService).deleteFileByUrl(imageUrl);
+                            } else {
+                                // For local storage, extract filename from URL
+                                String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+                                storageService.deleteFile(filename);
+                            }
+                        } catch (StorageFileNotFoundException e) {
+                            // Log but continue if file is already gone
+                            System.err.println("Image file not found: " + imageUrl);
+                        } catch (Exception e) {
+                            // Log the error but continue with deletion
+                            System.err.println("Failed to delete image: " + imageUrl + ". Error: " + e.getMessage());
+                        }
+                    }
+                }
+
+                // Delete the sighting
                 sightingService.deleteSighting(sightingId);
-                // We should probably also delete all other items dependent on it too
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-            }else{
+            } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-        }catch (UserNotFoundException e) {
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (InvalidDataException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
+            System.err.println("Failed to delete sighting: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

@@ -89,6 +89,11 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
+    public void deleteFile(String filename) {
+        //TODO: Implement this
+    }
+
+    @Override
     public void init() {
         try {
             Files.createDirectories(rootLocation);
