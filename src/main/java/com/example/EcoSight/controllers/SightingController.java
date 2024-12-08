@@ -11,10 +11,7 @@ import com.example.EcoSight.entity.User.UserRole;
 import com.example.EcoSight.exceptions.InvalidDataException;
 import com.example.EcoSight.exceptions.UserNotFoundException;
 import com.example.EcoSight.mapping.SightingMapper;
-import com.example.EcoSight.services.LocationService;
-import com.example.EcoSight.services.SightingService;
-import com.example.EcoSight.services.SpeciesService;
-import com.example.EcoSight.services.UserService;
+import com.example.EcoSight.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +28,7 @@ public class SightingController {
     private final UserService userService;
     private final SpeciesService speciesService;
     private final LocationService locationService;
+    private final BehaviourService behaviourService;
 
     @PostMapping("/create")
     public ResponseEntity<SightingDto> addSighting(
@@ -52,8 +50,15 @@ public class SightingController {
                     sightingSubmissionDto.getLongitude()
             );
 
+            //Create behaviour if it doesn't exist
+            behaviourService.getOrCreateBehaviour(
+                    sightingSubmissionDto.getBehaviourName(),
+                    sightingSubmissionDto.getBehaviourLevelOfActivity()
+            );
+
+
             SightingDto sightingDto = SightingSubmissionDto.toSightingDto(sightingSubmissionDto, requestUser);
-            Sighting sighting = sightingService.addSighting(sightingDto, requestUser, species);
+            sightingService.addSighting(sightingDto, requestUser, species);
             return ResponseEntity.ok(sightingDto);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

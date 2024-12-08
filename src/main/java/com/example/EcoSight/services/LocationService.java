@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 public class LocationService {
     private final LocationRepository locationRepository;
 
-    public Location getOrCreateLocation(Double latitude, Double longitude) {
+    public void getOrCreateLocation(Double latitude, Double longitude) {
         LocationId id = new LocationId(latitude, longitude);
-        return locationRepository.findById(id)
+        locationRepository.findById(id)
                 .orElseGet(() -> {
                     Location newLocation = new Location(id);
                     return locationRepository.save(newLocation);

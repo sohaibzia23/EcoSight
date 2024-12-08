@@ -4,6 +4,8 @@ import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.entity.behaviour.Behaviour;
+import com.example.EcoSight.entity.behaviour.BehaviourId;
 import com.example.EcoSight.entity.location.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -65,6 +67,14 @@ public class SightingMapper {
                 new ArrayList<>());
         sighting.setStatus(dto.getStatus());
         sighting.setLocation(LocationMapper.toEntity(dto.getLocation()));
+        sighting.setBehaviour(
+                new Behaviour(
+                        new BehaviourId(
+                                dto.getBehaviourName(),
+                                dto.getBehaviourLevelOfActivity()
+                        )
+                )
+        );
 
         return sighting;
     }

@@ -2,6 +2,7 @@ package com.example.EcoSight.dto.sighting;
 
 import com.example.EcoSight.dto.LocationDto;
 import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.entity.behaviour.LevelOfActivity;
 import lombok.Data;
 
 @Data
@@ -10,6 +11,8 @@ public class SightingSubmissionDto {
     private String speciesCommonName;
     private Double latitude;
     private Double longitude;
+    private String behaviourName;
+    private LevelOfActivity behaviourLevelOfActivity;
 
     public static SightingDto toSightingDto(SightingSubmissionDto submissionDto, User user){
         if(submissionDto == null){
@@ -27,6 +30,8 @@ public class SightingSubmissionDto {
                 submissionDto.getLongitude()
         );
         output.setLocation(location);
+        output.setBehaviourName(submissionDto.getBehaviourName());
+        output.setBehaviourLevelOfActivity(submissionDto.behaviourLevelOfActivity);
 
         return output;
     }
