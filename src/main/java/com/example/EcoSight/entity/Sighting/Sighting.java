@@ -1,5 +1,6 @@
 package com.example.EcoSight.entity.Sighting;
 
+import com.example.EcoSight.entity.location.Location;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import jakarta.persistence.*;
@@ -42,4 +43,11 @@ public class Sighting {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private SightingStatus status = SightingStatus.PENDING;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "latitude", referencedColumnName = "latitude", nullable = false),
+            @JoinColumn(name = "longitude", referencedColumnName = "longitude", nullable = false)
+    })
+    private Location location;
 }

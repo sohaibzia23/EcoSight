@@ -1,5 +1,6 @@
 package com.example.EcoSight.dto.sighting;
 
+import com.example.EcoSight.dto.LocationDto;
 import com.example.EcoSight.entity.Sighting.SightingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class SightingDto {
     private String contributorFirstName;
     private String contributorLastName;
     private String scientificName;
+    private LocationDto location;
     private List<String> imageUrls;
     private SightingStatus status;
 }

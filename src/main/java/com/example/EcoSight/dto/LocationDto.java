@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class LocationDto {
-    private Float latitude;
-    private Float longitude;
-    private Integer sightingId;
+    private Double latitude;
+    private Double longitude;
 }
