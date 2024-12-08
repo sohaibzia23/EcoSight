@@ -4,7 +4,7 @@ import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
-import com.example.EcoSight.repository.UserRepository;
+import com.example.EcoSight.entity.location.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class SightingMapper {
-    private final UserRepository contributorRepository;
 
     public static SightingDto mapToDto(Sighting sighting) {
         if (sighting == null) {
@@ -65,6 +64,7 @@ public class SightingMapper {
                 new ArrayList<>(dto.getImageUrls()) :
                 new ArrayList<>());
         sighting.setStatus(dto.getStatus());
+        sighting.setLocation(LocationMapper.toEntity(dto.getLocation()));
 
         return sighting;
     }
