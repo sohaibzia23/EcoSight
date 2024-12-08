@@ -4,7 +4,6 @@ package com.example.EcoSight.controllers;
 import com.example.EcoSight.dto.UserDto;
 import com.example.EcoSight.dto.UserLoginDto;
 import com.example.EcoSight.dto.auth.UserRegistrationDto;
-import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
 import com.example.EcoSight.mapping.UserMapper;
