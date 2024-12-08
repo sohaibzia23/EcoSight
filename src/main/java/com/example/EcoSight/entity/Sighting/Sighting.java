@@ -1,5 +1,6 @@
 package com.example.EcoSight.entity.Sighting;
 
+import com.example.EcoSight.entity.behaviour.Behaviour;
 import com.example.EcoSight.entity.location.Location;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
@@ -50,4 +51,11 @@ public class Sighting {
             @JoinColumn(name = "longitude", referencedColumnName = "longitude", nullable = false)
     })
     private Location location;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "behaviourName", referencedColumnName = "name", nullable = false),
+            @JoinColumn(name = "behaviourLevelOfActivity", referencedColumnName = "levelOfActivity", nullable = false)
+    })
+    private Behaviour behaviour;
 }
