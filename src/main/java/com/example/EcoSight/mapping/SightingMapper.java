@@ -1,12 +1,12 @@
 package com.example.EcoSight.mapping;
 
+import com.example.EcoSight.dto.LocationDto;
 import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.behaviour.Behaviour;
 import com.example.EcoSight.entity.behaviour.BehaviourId;
-import com.example.EcoSight.entity.location.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +40,17 @@ public class SightingMapper {
         dto.setImageUrls(sighting.getImageUrls() != null ?
                 new ArrayList<>(sighting.getImageUrls()) :
                 new ArrayList<>());
+        LocationDto locationDto = new LocationDto(
+                sighting.getLocation().getLocationId().getLatitude(),
+                sighting.getLocation().getLocationId().getLongitude()
+        );
+
+        dto.setLocation(locationDto);
 
         dto.setStatus(sighting.getStatus());
+        dto.setBehaviourName(sighting.getBehaviour().getBehaviourId().getName());
+        dto.setBehaviourLevelOfActivity(sighting.getBehaviour().getBehaviourId().getLevelOfActivity());
+
 
         return dto;
     }
