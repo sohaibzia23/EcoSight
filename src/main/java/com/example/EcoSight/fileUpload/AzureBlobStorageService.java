@@ -4,6 +4,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PublicAccessType;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class AzureBlobStorageService implements StorageService {
     public AzureBlobStorageService(
             @Value("${azure.storage.connection-string}") String connectionString,
             @Value("${azure.storage.container-name}") String containerName) {
+        System.out.println("Initializing Azure Blob Storage with container: " + containerName);
         this.blobServiceClient = new BlobServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient();
@@ -42,17 +44,22 @@ public class AzureBlobStorageService implements StorageService {
 
     @Override
     public void init() {
-        // Create container if it doesn't exist
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-        if (!containerClient.exists()) {
-            containerClient.create();
-            // Set container access policy to allow public access to blobs
-            containerClient.setAccessPolicy(PublicAccessType.BLOB, new ArrayList<>());
+        try {
+            BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
+            System.out.println("Checking container: " + containerName);
+
+            if (!containerClient.exists()) {
+                containerClient.create();
+                containerClient.setAccessPolicy(PublicAccessType.BLOB, new ArrayList<>());
+            } else {
+            }
+        } catch (Exception e) {
+            throw new StorageException("Failed to initialize storage", e);
         }
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public String store(MultipartFile file) {
         if (file.isEmpty()) {
             throw new StorageException("Failed to store empty file.");
         }
@@ -66,7 +73,14 @@ public class AzureBlobStorageService implements StorageService {
                     .getBlobContainerClient(containerName)
                     .getBlobClient(blobName);
 
+            BlobHttpHeaders headers = new BlobHttpHeaders()
+                    .setContentType(file.getContentType());
+
+            // Upload with the specified headers
             blobClient.upload(file.getInputStream(), file.getSize(), true);
+            blobClient.setHttpHeaders(headers);
+
+            return blobClient.getBlobUrl();
         } catch (IOException e) {
             throw new StorageException("Failed to store file in Azure.", e);
         }

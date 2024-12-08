@@ -67,24 +67,7 @@ public class SightingController {
             List<String> imageUrls = new ArrayList<>();
             if (sightingSubmissionDto.getImages() != null && !sightingSubmissionDto.getImages().isEmpty()) {
                 for (MultipartFile file : sightingSubmissionDto.getImages()) {
-                    if (!file.getContentType().startsWith("image/")) {
-                        throw new InvalidDataException("Only image files are allowed");
-                    }
-
-                    // Store the file and get its URL
-                    String filename = String.format("sighting-%s-%s",
-                            UUID.randomUUID().toString(),
-                            file.getOriginalFilename());
-                    storageService.store(file);
-
-                    // Get the URL (implementation depends on storage type)
-                    String fileUrl;
-                    if (storageService instanceof AzureBlobStorageService) {
-                        fileUrl = ((AzureBlobStorageService) storageService).getFileUrl(filename);
-                    } else {
-                        // For local storage, construct a URL to your server
-                        fileUrl = "/upload/files/" + filename;
-                    }
+                    String fileUrl = storageService.store(file);
                     imageUrls.add(fileUrl);
                 }
             }
@@ -180,9 +163,9 @@ public class SightingController {
                             if (storageService instanceof AzureBlobStorageService) {
                                 ((AzureBlobStorageService) storageService).deleteFileByUrl(imageUrl);
                             } else {
-                                // For local storage, extract filename from URL
-                                String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
-                                storageService.deleteFile(filename);
+                                  // For local storage, extract filename from URL
+//                                String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+//                                storageService.deleteFile(filename);
                             }
                         } catch (StorageFileNotFoundException e) {
                             // Log but continue if file is already gone

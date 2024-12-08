@@ -62,13 +62,6 @@ public class FileUploadController {
             if (storageService instanceof AzureBlobStorageService) {
                 fileUrl = ((AzureBlobStorageService) storageService)
                         .getFileUrl(file.getOriginalFilename());
-            } else {
-                fileUrl = MvcUriComponentsBuilder.fromMethodName(
-                                FileUploadController.class,
-                                "serveFile",
-                                file.getOriginalFilename())
-                        .build()
-                        .toString();
             }
 
             Map<String, String> response = new HashMap<>();
