@@ -58,7 +58,8 @@ public class SightingController {
 
 
             SightingDto sightingDto = SightingSubmissionDto.toSightingDto(sightingSubmissionDto, requestUser);
-            sightingService.addSighting(sightingDto, requestUser, species);
+            Sighting addedSighting = sightingService.addSighting(sightingDto, requestUser, species);
+            sightingDto.setSightingId(addedSighting.getSightingId());
             return ResponseEntity.ok(sightingDto);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
