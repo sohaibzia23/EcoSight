@@ -8,6 +8,8 @@ import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.exceptions.InvalidDataException;
 import com.example.EcoSight.exceptions.UserNotFoundException;
+import com.example.EcoSight.fileUpload.AzureBlobStorageService;
+import com.example.EcoSight.fileUpload.StorageService;
 import com.example.EcoSight.mapping.SightingMapper;
 import com.example.EcoSight.repository.SightingRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 public class SightingService {
     private final SightingRepository sightingRepository;
     private final SightingMapper sightingMapper;
+    private final StorageService storageService;
 
     @Transactional
     public Sighting addSighting(SightingDto sightingDto, User contributor, Species species) {
@@ -54,9 +57,26 @@ public class SightingService {
 
     @Transactional
     public void deleteSighting(Integer sightingId) {
-        Sighting sighting = sightingRepository.findById(sightingId)
-                .orElseThrow(() -> new RuntimeException("Sighting not found"));
-        sightingRepository.delete(sighting);
+        Sighting sighting = validateAndGetSighting(sightingId);
+
+        // Delete associated images if they exist
+        if (sighting.getImageUrls() != null && !sighting.getImageUrls().isEmpty()) {
+            for (String imageUrl : sighting.getImageUrls()) {
+                try {
+                    if (storageService instanceof AzureBlobStorageService) {
+                        ((AzureBlobStorageService) storageService).deleteFileByUrl(imageUrl);
+                    } else {
+                        String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+                        storageService.deleteFile(filename);
+                    }
+                } catch (Exception e) {
+                    // Log error but continue with deletion
+                    System.err.println("Failed to delete image: " + imageUrl);
+                }
+            }
+        }
+
+        sightingRepository.deleteById(sightingId);
     }
 
     public Sighting validateAndGetSighting(Integer sightingId){
