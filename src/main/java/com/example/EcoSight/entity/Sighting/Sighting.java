@@ -54,8 +54,8 @@ public class Sighting {
 
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "behaviourName", referencedColumnName = "name", nullable = false),
-            @JoinColumn(name = "behaviourLevelOfActivity", referencedColumnName = "levelOfActivity", nullable = false)
+            @JoinColumn(name = "behaviour_name", referencedColumnName = "name"),
+            @JoinColumn(name = "behaviour_level", referencedColumnName = "level_of_activity")
     })
     private Behaviour behaviour;
 }

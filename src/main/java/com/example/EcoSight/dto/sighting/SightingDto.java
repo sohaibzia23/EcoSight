@@ -2,6 +2,7 @@ package com.example.EcoSight.dto.sighting;
 
 import com.example.EcoSight.dto.LocationDto;
 import com.example.EcoSight.entity.Sighting.SightingStatus;
+import com.example.EcoSight.entity.behaviour.LevelOfActivity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,4 +24,6 @@ public class SightingDto {
     private LocationDto location;
     private List<String> imageUrls;
     private SightingStatus status;
+    private String behaviourName;
+    private LevelOfActivity behaviourLevelOfActivity;
 }
