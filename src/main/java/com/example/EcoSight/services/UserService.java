@@ -42,6 +42,14 @@ public class UserService {
         }
     }
 
+    public void removeUser(Integer id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
+    }
+
     public List<User> getAllContributors() {
         return userRepository.findByRole(UserRole.CONTRIBUTOR);
     }
