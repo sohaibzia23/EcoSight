@@ -91,4 +91,39 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeUser(
+            @PathVariable Integer id,
+            @RequestHeader("X-User-Id") Integer requestingUserId
+    ) {
+        try {
+            // Validate requesting user is an administrator
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+            if (requestUser.getRole() != UserRole.ADMINISTRATOR) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            // Get user to be removed
+            User userToRemove = userService.getUser(id);
+
+            // Prevent removal of administrators
+            if (userToRemove.getRole() == UserRole.ADMINISTRATOR) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .build();
+            }
+
+            // Only allow removal of contributors and researchers
+            if (userToRemove.getRole() != UserRole.CONTRIBUTOR &&
+                    userToRemove.getRole() != UserRole.RESEARCHER) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .build();
+            }
+
+            userService.removeUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }
