@@ -16,11 +16,11 @@ import com.example.EcoSight.fileUpload.StorageService;
 import com.example.EcoSight.mapping.SightingMapper;
 import com.example.EcoSight.services.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,6 +222,62 @@ public class SightingController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (InvalidDataException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/export/csv")
+    public ResponseEntity<byte[]> exportSightingsToCsv(
+            @RequestHeader("X-User-Id") Integer requestingUserId
+    ) {
+        try {
+            User requestUser = userService.validateAndGetUser(requestingUserId);
+            List<SightingDto> sightings;
+
+            if (requestUser.getRole() == UserRole.CONTRIBUTOR) {
+                sightings = sightingService.getSightingsByUserId(requestUser.getId());
+            } else {
+                sightings = sightingService.getAllSightings();
+            }
+
+            // Generate CSV content
+            StringBuilder csvContent = new StringBuilder();
+            // Add CSV header
+            csvContent.append("Sighting ID,Date,Time,Species Scientific Name,Species Common Name,Latitude,Longitude,")
+                    .append("Behavior,Behavior Level,Temperature,Weather Type,Status\n");
+
+            // Add data rows
+            for (SightingDto sighting : sightings) {
+                csvContent.append(String.format("%d,%s,%s,%s,%s,%.6f,%.6f,%s,%s,%.1f,%s,%s\n",
+                        sighting.getSightingId(),
+                        sighting.getSightingTime().toLocalDate(),
+                        sighting.getSightingTime().toLocalTime(),
+                        sighting.getScientificName(),
+                        sighting.getCommonName(),
+                        sighting.getLatitude(),
+                        sighting.getLongitude(),
+                        sighting.getBehaviourName(),
+                        sighting.getBehaviourLevelOfActivity(),
+                        sighting.getTemperature(),
+                        sighting.getWeatherType(),
+                        sighting.getStatus()
+                ));
+            }
+
+            // Convert to bytes and create response
+            byte[] csvBytes = csvContent.toString().getBytes(StandardCharsets.UTF_8);
+
+            // Set up response headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("text/csv"));
+            headers.setContentDisposition(ContentDisposition.builder("attachment")
+                    .filename("sightings_export.csv")
+                    .build());
+
+            return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
+        }catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
