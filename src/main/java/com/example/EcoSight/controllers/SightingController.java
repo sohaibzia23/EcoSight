@@ -3,6 +3,7 @@ package com.example.EcoSight.controllers;
 
 import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.dto.sighting.SightingSubmissionDto;
+import com.example.EcoSight.dto.sighting.StatusUpdateDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
@@ -197,7 +198,7 @@ public class SightingController {
     public ResponseEntity<SightingDto> updateSightingStatus(
             @PathVariable Integer sightingId,
             @RequestHeader("X-User-Id") Integer requestingUserId,
-            @RequestBody SightingStatus newStatus
+            @RequestBody StatusUpdateDto statusUpdate
     ) {
         try {
             User requestUser = userService.validateAndGetUser(requestingUserId);
@@ -206,7 +207,7 @@ public class SightingController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            Sighting updatedSighting = sightingService.updateSightingStatus(sightingId, newStatus);
+            Sighting updatedSighting = sightingService.updateSightingStatus(sightingId, statusUpdate.getStatus());
             return ResponseEntity.ok(SightingMapper.mapToDto(updatedSighting));
 
         } catch (UserNotFoundException e) {
