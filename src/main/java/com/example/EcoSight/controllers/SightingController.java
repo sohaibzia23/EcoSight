@@ -36,6 +36,7 @@ public class SightingController {
     private final BehaviourService behaviourService;
     private final StorageService storageService;
     private final WeatherConditionService weatherConditionService;
+    private final ConservationStatusService conservationStatusService;
 
     @PostMapping("/create")
     public ResponseEntity<SightingDto> addSighting(
@@ -67,6 +68,12 @@ public class SightingController {
             weatherConditionService.getOrCreateBehaviour(
                     sightingSubmissionDto.getTemperature(),
                     sightingSubmissionDto.getWeatherType()
+            );
+
+            //Create conservation status if it doesn't exist
+            conservationStatusService.getOrCreateConservationStatus(
+                    sightingSubmissionDto.getConservationType(),
+                    sightingSubmissionDto.getConservationDescription()
             );
 
             // Handle file uploads and get URLs

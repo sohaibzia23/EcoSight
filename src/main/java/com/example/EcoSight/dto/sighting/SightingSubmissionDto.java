@@ -2,6 +2,7 @@ package com.example.EcoSight.dto.sighting;
 
 import com.example.EcoSight.dto.LocationDto;
 import com.example.EcoSight.dto.WeatherConditionDto;
+import com.example.EcoSight.entity.ConservationStatus.ConservationType;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.behaviour.LevelOfActivity;
 import com.example.EcoSight.entity.weatherCondition.WeatherType;
@@ -22,6 +23,8 @@ public class SightingSubmissionDto {
     private LevelOfActivity behaviourLevelOfActivity;
     private Double temperature;
     private WeatherType weatherType;
+    private ConservationType conservationType;
+    private String conservationDescription;
 
     @JsonIgnore // Ignore this field during JSON serialization
     private List<MultipartFile> images;
@@ -52,6 +55,10 @@ public class SightingSubmissionDto {
                         submissionDto.getWeatherType()
                 )
         );
+
+        output.setConservationType(submissionDto.getConservationType());
+        output.setConservationDescription(submissionDto.getConservationDescription());
+
 
         return output;
     }
