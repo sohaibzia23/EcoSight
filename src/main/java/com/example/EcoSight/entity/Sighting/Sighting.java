@@ -1,5 +1,6 @@
 package com.example.EcoSight.entity.Sighting;
 
+import com.example.EcoSight.entity.ConservationStatus.ConservationStatus;
 import com.example.EcoSight.entity.behaviour.Behaviour;
 import com.example.EcoSight.entity.location.Location;
 import com.example.EcoSight.entity.Species;
@@ -66,4 +67,11 @@ public class Sighting {
             @JoinColumn(name = "weather_type", referencedColumnName = "weather_type")
     })
     private WeatherCondition weatherCondition;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "conservationStatusType", referencedColumnName = "conservation_status_type"),
+            @JoinColumn(name = "conservationDescription", referencedColumnName = "conservation_description")
+    })
+    private ConservationStatus conservationStatus;
 }
