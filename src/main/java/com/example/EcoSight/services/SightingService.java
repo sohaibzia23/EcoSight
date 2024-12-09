@@ -23,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SightingService {
     private final SightingRepository sightingRepository;
-    private final SightingMapper sightingMapper;
     private final StorageService storageService;
 
     @Transactional
@@ -45,8 +44,7 @@ public class SightingService {
 
     public List<SightingDto> getAllSightings() {
         List<Sighting> sighting = sightingRepository.findAll();
-        List<SightingDto> sightingDtoList=  sighting.stream().map(SightingMapper::mapToDto).toList();
-        return sightingDtoList;
+        return sighting.stream().map(SightingMapper::mapToDto).toList();
     }
 
     public List<SightingDto> getSightingsByUserId(Integer userId) {

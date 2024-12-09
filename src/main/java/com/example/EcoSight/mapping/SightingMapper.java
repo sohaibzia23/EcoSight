@@ -3,6 +3,8 @@ package com.example.EcoSight.mapping;
 import com.example.EcoSight.dto.LocationDto;
 import com.example.EcoSight.dto.WeatherConditionDto;
 import com.example.EcoSight.dto.sighting.SightingDto;
+import com.example.EcoSight.entity.ConservationStatus.ConservationStatus;
+import com.example.EcoSight.entity.ConservationStatus.ConservationStatusId;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
@@ -12,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -55,15 +55,11 @@ public class SightingMapper {
         dto.setBehaviourLevelOfActivity(sighting.getBehaviour().getBehaviourId().getLevelOfActivity());
         dto.setTemperature(sighting.getWeatherCondition().getId().getTemperature());
         dto.setWeatherType(sighting.getWeatherCondition().getId().getWeatherType());
+        dto.setConservationType(sighting.getConservationStatus().getId().getConservationType());
+        dto.setConservationDescription(sighting.getConservationStatus().getId().getConservationDescription());
 
 
         return dto;
-    }
-
-    public static List<SightingDto> mapToDtoList(List<Sighting> sightings) {
-        return sightings.stream()
-                .map(SightingMapper::mapToDto)
-                .collect(Collectors.toList());
     }
 
     public static Sighting mapToEntity(SightingDto dto, User contributor, Species species) {
@@ -102,7 +98,14 @@ public class SightingMapper {
                         )
                 )
         );
-
+        sighting.setConservationStatus(
+                new ConservationStatus(
+                        new ConservationStatusId(
+                                dto.getConservationType(),
+                                dto.getConservationDescription()
+                        )
+                )
+        );
 
         return sighting;
     }
