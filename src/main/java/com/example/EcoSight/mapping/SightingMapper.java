@@ -8,8 +8,6 @@ import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.behaviour.Behaviour;
 import com.example.EcoSight.entity.behaviour.BehaviourId;
-import com.example.EcoSight.entity.weatherCondition.WeatherCondition;
-import com.example.EcoSight.entity.weatherCondition.WeatherConditionId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +36,7 @@ public class SightingMapper {
 
         if (sighting.getSpecies() != null) {
             dto.setScientificName(sighting.getSpecies().getScientificName());
+            dto.setCommonName(sighting.getSpecies().getCommonName());
         }
 
         dto.setImageUrls(sighting.getImageUrls() != null ?
@@ -48,17 +47,14 @@ public class SightingMapper {
                 sighting.getLocation().getLocationId().getLongitude()
         );
 
-        dto.setLocation(locationDto);
+        dto.setLatitude(locationDto.getLatitude());
+        dto.setLongitude(locationDto.getLongitude());
 
         dto.setStatus(sighting.getStatus());
         dto.setBehaviourName(sighting.getBehaviour().getBehaviourId().getName());
         dto.setBehaviourLevelOfActivity(sighting.getBehaviour().getBehaviourId().getLevelOfActivity());
-        dto.setWeather(
-                new WeatherConditionDto(
-                        sighting.getWeatherCondition().getId().getTemperature(),
-                        sighting.getWeatherCondition().getId().getWeatherType()
-                )
-        );
+        dto.setTemperature(sighting.getWeatherCondition().getId().getTemperature());
+        dto.setWeatherType(sighting.getWeatherCondition().getId().getWeatherType());
 
 
         return dto;
@@ -84,7 +80,12 @@ public class SightingMapper {
                 new ArrayList<>(dto.getImageUrls()) :
                 new ArrayList<>());
         sighting.setStatus(dto.getStatus());
-        sighting.setLocation(LocationMapper.toEntity(dto.getLocation()));
+        sighting.setLocation(LocationMapper.toEntity(
+                new LocationDto(
+                        dto.getLatitude(),
+                        dto.getLongitude()
+                )
+        ));
         sighting.setBehaviour(
                 new Behaviour(
                         new BehaviourId(
@@ -94,8 +95,14 @@ public class SightingMapper {
                 )
         );
         sighting.setWeatherCondition(
-                WeatherConditionMapper.toEntity(dto.getWeather())
+                WeatherConditionMapper.toEntity(
+                        new WeatherConditionDto(
+                                dto.getTemperature(),
+                                dto.getWeatherType()
+                        )
+                )
         );
+
 
         return sighting;
     }

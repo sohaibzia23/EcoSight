@@ -1,7 +1,6 @@
 package com.example.EcoSight.dto.sighting;
 
 import com.example.EcoSight.dto.LocationDto;
-import com.example.EcoSight.dto.WeatherConditionDto;
 import com.example.EcoSight.entity.ConservationStatus.ConservationType;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.behaviour.LevelOfActivity;
@@ -36,6 +35,7 @@ public class SightingSubmissionDto {
         SightingDto output = new SightingDto();
 
         output.setScientificName(submissionDto.getSpeciesScientificName());
+        output.setCommonName(submissionDto.getSpeciesCommonName());
         output.setContributorId(user.getId());
         output.setContributorEmail(user.getEmail());
         output.setContributorFirstName(user.getFirstName());
@@ -44,18 +44,14 @@ public class SightingSubmissionDto {
                 submissionDto.getLatitude(),
                 submissionDto.getLongitude()
         );
-        output.setLocation(location);
+        output.setLatitude(location.getLatitude());
+        output.setLongitude(location.getLongitude());
         output.setBehaviourName(submissionDto.getBehaviourName());
         output.setBehaviourLevelOfActivity(submissionDto.getBehaviourLevelOfActivity());
         output.setImageUrls(imageUrls);
         output.setSightingTime(LocalDateTime.now());
-        output.setWeather(
-                new WeatherConditionDto(
-                        submissionDto.getTemperature(),
-                        submissionDto.getWeatherType()
-                )
-        );
-
+        output.setTemperature(submissionDto.getTemperature());
+        output.setWeatherType(submissionDto.getWeatherType());
         output.setConservationType(submissionDto.getConservationType());
         output.setConservationDescription(submissionDto.getConservationDescription());
 
