@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/sightings")
 @RequiredArgsConstructor
@@ -148,7 +149,8 @@ public class SightingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SightingDto> getSightingBySightingId(@PathVariable Integer id) {
+    public ResponseEntity<SightingDto> getSightingBySightingId(@PathVariable Integer id,
+                                                               @RequestHeader("X-User-Id") Integer requestingSightingId) {
         try{
             SightingDto sighting = sightingService.getSightingById(id);
             return ResponseEntity.ok(sighting);
