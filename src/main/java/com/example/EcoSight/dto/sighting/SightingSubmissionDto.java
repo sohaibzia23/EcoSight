@@ -1,8 +1,10 @@
 package com.example.EcoSight.dto.sighting;
 
 import com.example.EcoSight.dto.LocationDto;
+import com.example.EcoSight.dto.WeatherConditionDto;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.behaviour.LevelOfActivity;
+import com.example.EcoSight.entity.weatherCondition.WeatherType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,8 @@ public class SightingSubmissionDto {
     private Double longitude;
     private String behaviourName;
     private LevelOfActivity behaviourLevelOfActivity;
+    private Double temperature;
+    private WeatherType weatherType;
 
     @JsonIgnore // Ignore this field during JSON serialization
     private List<MultipartFile> images;
@@ -42,6 +46,12 @@ public class SightingSubmissionDto {
         output.setBehaviourLevelOfActivity(submissionDto.getBehaviourLevelOfActivity());
         output.setImageUrls(imageUrls);
         output.setSightingTime(LocalDateTime.now());
+        output.setWeather(
+                new WeatherConditionDto(
+                        submissionDto.getTemperature(),
+                        submissionDto.getWeatherType()
+                )
+        );
 
         return output;
     }
