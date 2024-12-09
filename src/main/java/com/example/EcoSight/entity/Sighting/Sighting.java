@@ -4,6 +4,7 @@ import com.example.EcoSight.entity.behaviour.Behaviour;
 import com.example.EcoSight.entity.location.Location;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
+import com.example.EcoSight.entity.weatherCondition.WeatherCondition;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,4 +59,11 @@ public class Sighting {
             @JoinColumn(name = "behaviour_level", referencedColumnName = "level_of_activity")
     })
     private Behaviour behaviour;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "weather_temperature", referencedColumnName = "temperature"),
+            @JoinColumn(name = "weather_type", referencedColumnName = "weather_type")
+    })
+    private WeatherCondition weatherCondition;
 }

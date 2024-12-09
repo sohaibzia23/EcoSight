@@ -1,12 +1,15 @@
 package com.example.EcoSight.mapping;
 
 import com.example.EcoSight.dto.LocationDto;
+import com.example.EcoSight.dto.WeatherConditionDto;
 import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.behaviour.Behaviour;
 import com.example.EcoSight.entity.behaviour.BehaviourId;
+import com.example.EcoSight.entity.weatherCondition.WeatherCondition;
+import com.example.EcoSight.entity.weatherCondition.WeatherConditionId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +53,12 @@ public class SightingMapper {
         dto.setStatus(sighting.getStatus());
         dto.setBehaviourName(sighting.getBehaviour().getBehaviourId().getName());
         dto.setBehaviourLevelOfActivity(sighting.getBehaviour().getBehaviourId().getLevelOfActivity());
+        dto.setWeather(
+                new WeatherConditionDto(
+                        sighting.getWeatherCondition().getId().getTemperature(),
+                        sighting.getWeatherCondition().getId().getWeatherType()
+                )
+        );
 
 
         return dto;
@@ -83,6 +92,9 @@ public class SightingMapper {
                                 dto.getBehaviourLevelOfActivity()
                         )
                 )
+        );
+        sighting.setWeatherCondition(
+                WeatherConditionMapper.toEntity(dto.getWeather())
         );
 
         return sighting;

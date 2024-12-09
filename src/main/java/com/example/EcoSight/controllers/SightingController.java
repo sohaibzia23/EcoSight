@@ -5,7 +5,6 @@ import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.dto.sighting.SightingSubmissionDto;
 import com.example.EcoSight.dto.sighting.StatusUpdateDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
-import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/sightings")
@@ -37,6 +35,7 @@ public class SightingController {
     private final LocationService locationService;
     private final BehaviourService behaviourService;
     private final StorageService storageService;
+    private final WeatherConditionService weatherConditionService;
 
     @PostMapping("/create")
     public ResponseEntity<SightingDto> addSighting(
@@ -62,6 +61,12 @@ public class SightingController {
             behaviourService.getOrCreateBehaviour(
                     sightingSubmissionDto.getBehaviourName(),
                     sightingSubmissionDto.getBehaviourLevelOfActivity()
+            );
+
+            //Create weather if it doesn't exist
+            weatherConditionService.getOrCreateBehaviour(
+                    sightingSubmissionDto.getTemperature(),
+                    sightingSubmissionDto.getWeatherType()
             );
 
             // Handle file uploads and get URLs
@@ -163,10 +168,6 @@ public class SightingController {
                         try {
                             if (storageService instanceof AzureBlobStorageService) {
                                 ((AzureBlobStorageService) storageService).deleteFileByUrl(imageUrl);
-                            } else {
-                                  // For local storage, extract filename from URL
-//                                String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
-//                                storageService.deleteFile(filename);
                             }
                         } catch (StorageFileNotFoundException e) {
                             // Log but continue if file is already gone
