@@ -5,7 +5,6 @@ import com.example.EcoSight.dto.sighting.SightingDto;
 import com.example.EcoSight.dto.sighting.SightingSubmissionDto;
 import com.example.EcoSight.dto.sighting.StatusUpdateDto;
 import com.example.EcoSight.entity.Sighting.Sighting;
-import com.example.EcoSight.entity.Sighting.SightingStatus;
 import com.example.EcoSight.entity.Species;
 import com.example.EcoSight.entity.User.User;
 import com.example.EcoSight.entity.User.UserRole;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/sightings")
